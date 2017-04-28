@@ -1,30 +1,29 @@
 <?php
 
 $ch = curl_init('https://en.wikipedia.org/w/api.php?action=query&titles=Main%20Page&prop=revisions&rvprop=content&format=json');
-
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $curl = curl_exec($ch); // выполняем запрос curl
-echo $curl;
-curl_close($ch);
 
 // из php получаем JSON
 
-$jsonString = json_encode($ch);
-file_put_contents('1.json', $jsonString);
-echo $jsonString;
+$jsonString = json_decode($curl, true);
+//echo '<pre>';
+//var_dump($jsonString);
 
 //	Выводим title и page_id
+//echo count($jsonString);
 
-for ($i=0;$i<=count($jsonString);$i++)
+foreach($jsonString as $key => $val)
 {
-    if($jsonString[$i] = 'title')
+    foreach($val  as  $inner_key => $value)
     {
-        echo 'title = ' . $jsonString[$i];
+        foreach ($value as $inner_key2 => $value2)
+        {
+                echo 'page_id = ' . $value2 ["pageid"];
+                echo "<br />";
+                echo 'title = ' . $value2 ["title"];
+        }
     }
-    if($jsonString[$i] = 'page_id')
-    {
-        echo 'page_id = ' . $jsonString[$i];
-    }
-
 }
 
 ?>
